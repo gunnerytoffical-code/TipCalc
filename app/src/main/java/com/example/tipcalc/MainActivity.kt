@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -50,6 +51,14 @@ fun TipCalculator() {
     var orderAmount by remember { mutableStateOf("") }
     var dishesCount by remember { mutableStateOf("") }
     var tipPercent by remember { mutableFloatStateOf(15f) }
+
+    val discountPercent = when (dishesCount.toIntOrNull() ?: 0) {
+        in 1..2 -> 3
+        in 3..5 -> 5
+        in 6..10 -> 7
+        in 11..Int.MAX_VALUE -> 10
+        else -> 0
+    }
 
     Column(
         modifier = Modifier
@@ -134,6 +143,38 @@ fun TipCalculator() {
         ) {
             Text("0%")
             Text("25%")
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(
+            text = "Скидка за количество блюд",
+            fontSize = 18.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            val discounts = listOf(3, 5, 7, 10)
+
+            discounts.forEach { discount ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = discountPercent == discount,
+                        onClick = null
+                    )
+
+                    Text(
+                        text = "Скидка $discount%",
+                        fontSize = 16.sp
+                    )
+                }
+            }
         }
     }
 }
