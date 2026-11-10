@@ -241,7 +241,6 @@ fun TipCalculatorPreview() {
     }
 }
 
-
 @Composable
 fun ResultRow(
     title: String,
